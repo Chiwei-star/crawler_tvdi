@@ -1,11 +1,7 @@
-# crawler_tvdi
-2028_07_08_職能發展學院_Pythong視窗網路爬蟲
+# __2025_07_08_tvdi_crawler__
+2025_07_08 職能發展學院_爬蟲視窗
 
-上課網址 https://meet.google.com/rvq-smie-nnp
+**上課網址**
+https://meet.google.com/rvq-smie-nnp
 
-## Feature
 
-- python basic
-- python class
-- python crawler
-- python window
