@@ -19,7 +19,7 @@ async def main():
         "https://www.wantgoo.com/stock/3014/technical-chart",
         "https://www.wantgoo.com/stock/2002/technical-chart",
         "https://www.wantgoo.com/stock/2610/technical-chart",
-        "https://www.wantgoo.com/stock/2618/technical-chart",
+        "https://www.wantgoo.com/stock/2618/technical-chart"
     ] 
     #建立一個BrowserConfig,讓chromium的瀏覽器顯示
     #BrowserConfig實體
