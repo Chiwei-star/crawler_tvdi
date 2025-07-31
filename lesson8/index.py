@@ -56,7 +56,7 @@ class SimpleApp:
             display_text = f"{stock['code']} - {stock['name']}"
             self.stock_display_list.append(stock)  # 保留原始 dict
             self.stock_listbox.insert(tk.END, display_text)
-            self.stock_listbox.insert(tk.END, f"{stock['code']} - {stock['name']}")
+            
             
         self.stock_listbox.pack(side=tk.LEFT)
         self.scrollbar.config(command=self.stock_listbox.yview)
@@ -76,10 +76,10 @@ class SimpleApp:
             text="選取的股票數量是0筆",
             font=("Arial", 12, "bold"),
             state=tk.DISABLED,
-            command=lambda: threading.Thread(target=self.start_crawling).start()
+            command=lambda: threading.Thread(target=self.start_crawling, daemon=True).start()
         )
         self.selected_button.pack(pady=10, padx=10, fill=tk.X, expand=True)
-    def on_stock_select(self, _=None):
+    def on_stock_select(self, event=None):
         """當股票被選取時，更新右側顯示的資訊"""
         # 直接用 index 取得原始 dict
         self.selected_stocks = [self.stock_display_list[i] for i in self.stock_listbox.curselection()]
@@ -90,15 +90,21 @@ class SimpleApp:
             self.selected_button.config(state=tk.NORMAL)
     def start_crawling(self, event=None):
         """開始爬蟲"""
-        # 在這裡可以加入爬蟲邏輯
-        # 例如: wantgoo.crawl_stocks(self.selected_stocks)
-        urls: list[str] = []
-        for stock in self.selected_stocks:
-            code = stock['code']
-            url_template = f'https://www.wantgoo.com/stock/{code}/technical-chart'
-            urls.append(url_template)
-        result:list[dict] = asyncio.run(wantgoo.get_stock_data(urls))
-        print(f"爬取到的股票資料: {result}")
+        self.selected_button.config(state=tk.DISABLED)
+        try:
+            # 在這裡可以加入爬蟲邏輯
+            # 例如: wantgoo.crawl_stocks(self.selected_stocks)
+            urls: list[str] = []
+            for stock in self.selected_stocks:
+                code = stock['code']
+                url_template = f'https://www.wantgoo.com/stock/{code}/technical-chart'
+                urls.append(url_template)
+            result:list[dict] = asyncio.run(wantgoo.get_stock_data(urls))
+            print(f"爬取到的股票資料: {result}")
+        except Exception as e:
+            print(f"爬蟲過程中發生錯誤: {e}")
+        finally:
+            self.selected_button.config(state=tk.NORMAL)
 
     def clear_selection(self):
         """清除選取的股票"""
